@@ -1,3 +1,17 @@
+// export const callAPI = async (url) => {
+//   let loading = true;
+//   let error = false;
+//   try {
+//     const res = await fetch(url);
+//     const data = await res.json();
+//     loading = false;
+//     return { loading, error, data: data };
+//   } catch (err) {
+//     loading = false;
+//     error = err;
+//     return { loading, error, data: false };
+//   }
+// };
 
 import React, { useEffect, useState } from "react";
 

@@ -3,36 +3,49 @@ import { createContext, useState, useEffect } from "react";
 const AppContext = createContext();
 
 const ContextProvider = ({ children }) => {
-  const [products, setProducts] = useState([]);
-  const [searchKeyword, setSearchKeyword] = useState([]);
-  const [searchedProducts, setSearchedProducts] = useState([]);
-  const [loadingProducts, setLoadingProducts] = useState(false);
-  const [searchedLoadingProducts, setSearchedLoadingProducts] = useState(false);
-  //   const { data, error, loading } = useCallApi(
-  //     `${process.env.BACKEND_URL}/products`
-  //   );
+  const [products, setProducts] = useState({
+    data: [],
+    loading: false,
+    error: false,
+  });
+  const [filteredProducts, setFilteredProducts] = useState({
+    data: [],
+    loading: false,
+    error: false,
+  });
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
-    setLoadingProducts(true);
-    fetch(`${process.env.BACKEND_URL}/products/`)
+    setProducts({ ...products, loading: true });
+    fetch(`${process.env.BACKEND_URL}/products`)
       .then((resp) => resp.json())
       .then((res) => {
-        console.log("res", res);
-        setProducts(res);
-        setLoadingProducts(false);
+        setProducts({ ...products, data: res, loading: false });
+        console.log({res})
+      })
+      .catch((error) => {
+        setProducts({ ...products, data: [], loading: false, error });
       });
   }, []);
 
   useEffect(() => {
-    setSearchedLoadingProducts(true);
+    setFilteredProducts({ ...filteredProducts, loading: true });
     fetch(`${process.env.BACKEND_URL}/products/search?query=${searchKeyword}`)
       .then((resp) => resp.json())
       .then((res) => {
-        console.log("res", res);
-        setSearchedProducts(res);
-        setSearchedLoadingProducts(false);
+        setFilteredProducts({ ...filteredProducts, loading: false, data: res });
+      })
+      .catch((error) => {
+        setFilteredProducts({
+          ...filteredProducts,
+          loading: false,
+          data: [],
+          error: error,
+        });
       });
   }, [searchKeyword]);
+
+  // /products/search?query=ay
 
   return (
     <AppContext.Provider
@@ -41,12 +54,8 @@ const ContextProvider = ({ children }) => {
         setProducts,
         searchKeyword,
         setSearchKeyword,
-        loadingProducts,
-        setLoadingProducts,
-        searchedProducts,
-        setSearchedProducts,
-        searchedLoadingProducts,
-        setSearchedLoadingProducts,
+        filteredProducts,
+        setFilteredProducts,
       }}
     >
       {children}
