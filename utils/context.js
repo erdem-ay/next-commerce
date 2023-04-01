@@ -14,6 +14,25 @@ const ContextProvider = ({ children }) => {
     error: false,
   });
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [cart, setCart] = useState([])
+
+  if (cart && cart.length > 0) {
+    for (const item of cart) {
+      console.log(item);
+    }
+  }
+
+  const addCart = (product) => {
+    const updatedCart = ([...cart, product]);
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  }
+
+  useEffect(() => {
+    const localStorageCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(localStorageCart);
+  }, [])
+
 
   useEffect(() => {
     setProducts({ ...products, loading: true });
@@ -21,7 +40,7 @@ const ContextProvider = ({ children }) => {
       .then((resp) => resp.json())
       .then((res) => {
         setProducts({ ...products, data: res, loading: false });
-        console.log({res})
+        console.log({ res })
       })
       .catch((error) => {
         setProducts({ ...products, data: [], loading: false, error });
@@ -56,6 +75,9 @@ const ContextProvider = ({ children }) => {
         setSearchKeyword,
         filteredProducts,
         setFilteredProducts,
+        cart,
+        setCart,
+        addCart
       }}
     >
       {children}
