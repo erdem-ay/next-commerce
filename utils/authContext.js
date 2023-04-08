@@ -21,31 +21,36 @@ const AuthContextProvider = ({ children }) => {
       .then((response) => response.json())
       .then((data) => {
         setUser(data);
-        console.log(data?.id)
         getUserCart(data.id)
       })
       .catch((error) => console.error(error));
   }, []);
 
 
-  const getUserCart = (userId) => {
-    console.log('guc')
-    console.log({userId})
-    fetch(`${process.env.BACKEND_URL}/products/cart/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        localStorage.setItem('cart', JSON.stringify(data.cart.products) )
-      })
-      .catch((error) => console.error(error));
+  const getUserCart = async (userId) => {
+    // fetch(`${process.env.BACKEND_URL}/products/cart/${userId}`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     localStorage.setItem('cart', JSON.stringify(data.cart.products))
+    //     console.log(data)
+    //     return data.cart.products
+    //   })
+    //   .catch((error) => console.error(error));
+
+    const response = await fetch(`${process.env.BACKEND_URL}/products/cart/${userId}`);
+    const data = await response.json();
+    localStorage.setItem('cart', JSON.stringify(data.cart.products))
+    return data;
   }
 
-  
+
 
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        getUserCart,
       }}
     >
       {children}
