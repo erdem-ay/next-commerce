@@ -33,7 +33,7 @@ console.log(cart)
       .then(async (res) => {
         // setCart((prevCart) => prevCart.filter(item => item.product_id !== prod_id));
         let newCart = await getUserCart(user.id)
-        setCart(newCart.cart)
+        setCart(newCart.cart.products)
         console.log("basket",newCart)
       })
       .catch((error) => {
