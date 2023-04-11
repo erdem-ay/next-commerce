@@ -1,9 +1,12 @@
+import AppContext from "@/utils/context";
 import Search from "./Search";
 import Link from "next/link";
 import { BsPersonCircle } from "react-icons/bs";
 import { SlBasket } from "react-icons/sl";
+import { useContext } from "react";
 
 const Navbar = () => {
+  const { cart } = useContext(AppContext)
   return (
     <nav className="fixed h-[8vh] bg-gray-800 flex justify-around w-full z-20">
       <div className="max-w-7xl mx-auto px-4  sm:px-6 lg:px-8 w-full">
@@ -23,12 +26,13 @@ const Navbar = () => {
               </Link>
             </div>
             <Search />
-            <Link href='/basket' >
+            <Link href='/basket' className="flex relative" >
               <SlBasket className="text-white text-2xl ml-4 hover:text-orange-400" />
+              <p className="absolute text-white w-3 text-xs text-center -top-2 right-0 bg-red-400 rounded-full">{cart.length}</p>
             </Link>
-              <Link href="/login">
-                <BsPersonCircle className="h-8 text-white text-2xl ml-4 hover:text-orange-400" />
-              </Link>
+            <Link href="/login">
+              <BsPersonCircle className="h-8 text-white text-2xl ml-4 hover:text-orange-400" />
+            </Link>
           </div>
         </div>
       </div>
