@@ -12,17 +12,17 @@ const Footer = () => {
           <ul className="flex space-x-4">
             <li>
               <Link
-               href="#">
+               href="https://twitter.com" target='_blank'>
                 <FaTwitter />
               </Link>
             </li>
             <li>
-              <Link href="#">
+              <Link href="https://instagram.com" target='_blank'>
                 <FaInstagram />
               </Link>
             </li>
             <li>
-              <Link href="#">
+              <Link href="https://facebook.com" target='_blank'>
                 <FaFacebook />
               </Link>
             </li>
